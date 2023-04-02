@@ -6,6 +6,6 @@ import (
 	"github.com/messagebird/go-rest-api/v9/sms"
 )
 
-func SendSms(recipients []string, body string, msgParams *sms.Params) (*sms.Message, error) {
-	return sms.Create(MessengerClient, env.CONFIG.Messenger.Originator, recipients, body, msgParams)
+func SendSms(recipients []string, body string, params *sms.Params) (*sms.Message, error) {
+	return sms.Create(MessengerClient, env.CONFIG.Messenger.Originator, recipients, body, params)
 }
