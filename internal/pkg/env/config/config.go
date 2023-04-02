@@ -9,8 +9,8 @@ import (
 )
 
 type Config struct {
-	Origins    []string           `mapstructure:"origins"`
 	Stage      string             `mapstructure:"stage"`
+	Origins    []string           `mapstructure:"origins"`
 	Domain     string             `mapstructure:"domain"`
 	HttpServer httpserver.Config  `mapstructure:"httpserver"`
 	DB         gorm.Config        `mapstructure:"db"`
