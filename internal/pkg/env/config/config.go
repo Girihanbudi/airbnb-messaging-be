@@ -5,6 +5,7 @@ import (
 	gorm "airbnb-messaging-be/internal/pkg/gorm/config"
 	httpserver "airbnb-messaging-be/internal/pkg/http/server/config"
 	jwt "airbnb-messaging-be/internal/pkg/jwt/config"
+	kafka "airbnb-messaging-be/internal/pkg/kafka/config"
 	messagebird "airbnb-messaging-be/internal/pkg/messagebird/config"
 )
 
@@ -17,4 +18,5 @@ type Config struct {
 	Jwt        jwt.Config         `mapstructure:"jwt"`
 	Cache      cache.Config       `mapstructure:"cache"`
 	Messenger  messagebird.Config `mapstructure:"messenger"`
+	Kafka      kafka.Config       `mapstructure:"kafka"`
 }
