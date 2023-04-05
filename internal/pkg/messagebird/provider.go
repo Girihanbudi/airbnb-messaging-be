@@ -1,24 +1,28 @@
 package messagebird
 
 import (
-	"airbnb-messaging-be/internal/pkg/env"
-	"airbnb-messaging-be/internal/pkg/log"
-	"fmt"
+	"airbnb-messaging-be/internal/pkg/messagebird/config"
 
 	messagebird "github.com/messagebird/go-rest-api/v9"
 )
 
 const Instance string = "Messenger"
 
-// global auth cache declaration
-var MessengerClient *messagebird.DefaultClient
+type Options struct {
+	config.Config
+}
 
-func InitAuthCache() {
+type Messenger struct {
+	Client *messagebird.DefaultClient
+	Options
+}
 
+func InitMessenger(options Options) *Messenger {
 	// Create a client.
-	client := messagebird.New(env.CONFIG.Messenger.AccessKey)
+	client := messagebird.New(options.AccessKey)
 
-	log.Event(Instance, fmt.Sprintf("connected to %s", env.CONFIG.Cache.Auth.Host))
-
-	MessengerClient = client
+	return &Messenger{
+		Client:  client,
+		Options: options,
+	}
 }
