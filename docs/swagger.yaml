@@ -1,0 +1,16 @@
+basePath: /v1
+host: localhost:8080
+info:
+  contact:
+    email: support@airbnb.co.id
+    name: API Support
+    url: https://airbnb.co.id/support
+  description: Airbnb User Backend Service API
+  termsOfService: https://airbnb.co.id
+  title: Airbnb User Backend API
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

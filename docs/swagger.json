@@ -1,0 +1,22 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "description": "Airbnb User Backend Service API",
+        "title": "Airbnb User Backend API",
+        "termsOfService": "https://airbnb.co.id",
+        "contact": {
+            "name": "API Support",
+            "url": "https://airbnb.co.id/support",
+            "email": "support@airbnb.co.id"
+        },
+        "version": "1.0"
+    },
+    "host": "localhost:8080",
+    "basePath": "/v1",
+    "paths": {},
+    "securityDefinitions": {
+        "BasicAuth": {
+            "type": "basic"
+        }
+    }
+}
