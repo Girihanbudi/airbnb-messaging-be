@@ -8,6 +8,7 @@ import (
 )
 
 var PackageSet = wire.NewSet(
+	wire.Struct(new(router.Options), "*"),
 	router.NewRouter,
 
 	wire.Struct(new(kafka.Options), "*"),
