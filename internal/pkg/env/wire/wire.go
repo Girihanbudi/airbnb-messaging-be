@@ -11,4 +11,7 @@ var PackageSet = wire.NewSet(
 	env.ProvideEnv,
 	tool.ExtractServerConfig,
 	tool.ExtractDBConfig,
+	tool.ExtractMessengerConfig,
+	tool.ExtractKafkaConfig,
+	tool.ExtractKafkaRouterConfig,
 )
