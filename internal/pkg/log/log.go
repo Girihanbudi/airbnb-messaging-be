@@ -8,6 +8,11 @@ import (
 var log = logrus.New()
 
 func init() {
+	log.Formatter = defaultFormatter()
+	log.Level = logrus.DebugLevel
+}
+
+func defaultFormatter() *prefixed.TextFormatter {
 	formatter := new(prefixed.TextFormatter)
 	formatter.FullTimestamp = true
 
@@ -17,25 +22,7 @@ func init() {
 		TimestampStyle: "white+h",
 	})
 
-	log.Formatter = formatter
-	log.Level = logrus.DebugLevel
-}
-
-func NewLogger(instance string, removeNewLine bool) *logrus.Entry {
-	newLogger := log
-	entry := newLogger.WithFields(logrus.Fields{
-		"prefix": instance,
-	})
-
-	if removeNewLine {
-		if len(entry.Message) > 0 && entry.Message[len(entry.Message)-1] == '\n' {
-			b := []byte(entry.Message[0 : len(entry.Message)-1])
-			entry.Message = string(b)
-		}
-		newLogger.Formatter.Format(entry)
-	}
-
-	return entry
+	return formatter
 }
 
 func Event(instance, msg string) {

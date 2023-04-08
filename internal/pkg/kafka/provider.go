@@ -30,7 +30,7 @@ type Listener struct {
 
 func NewEventListener(options Options) *Listener {
 
-	sarama.Logger = log.NewLogger(Instance, true)
+	sarama.Logger = log.NewLogger(Instance)
 	version, err := sarama.ParseKafkaVersion(options.Version)
 	if err != nil {
 		log.Fatal(Instance, "error parsing Kafka version", err)
