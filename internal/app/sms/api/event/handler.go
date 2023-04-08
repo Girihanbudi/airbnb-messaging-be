@@ -5,10 +5,10 @@ import (
 	"context"
 	"encoding/json"
 
-	"github.com/confluentinc/confluent-kafka-go/v2/kafka"
+	"github.com/Shopify/sarama"
 )
 
-func (h Handler) SendSms(ctx context.Context, msg *kafka.Message) {
+func (h Handler) SendSms(ctx context.Context, msg *sarama.ConsumerMessage) {
 	var req request.SendSms
 	json.Unmarshal(msg.Value, &req)
 	h.Sms.SendSms(ctx, req)
