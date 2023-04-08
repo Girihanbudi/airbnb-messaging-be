@@ -62,7 +62,7 @@ func (a App) runModules(ctx context.Context) {
 	}()
 
 	go func() {
-		err := a.EventListener.Start()
+		err := a.EventListener.Start(ctx)
 		if err != nil {
 			log.Fatal(Instance, "failed to start event listener", err)
 		}
