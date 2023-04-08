@@ -23,4 +23,13 @@ cache:
 messenger:
   accesskey:
   originator:
+kafka:
+  clientid:
+  brokers:
+  group:
+  assigner:
+  version:
+  isuseoldest:
+  router:
+    separator:
 
