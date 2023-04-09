@@ -2,10 +2,10 @@ package log
 
 import "github.com/sirupsen/logrus"
 
-func NewLogger(instance string) *logrus.Entry {
+func NewLogger(instance string, trimNewLine bool) *logrus.Entry {
 	newLogger := logrus.New()
 	formatter := defaultFormatter()
-	formatter.QuoteEmptyFields = true
+	formatter.TrimNewLine = trimNewLine
 	newLogger.Level = logrus.DebugLevel
 
 	entry := newLogger.WithFields(logrus.Fields{

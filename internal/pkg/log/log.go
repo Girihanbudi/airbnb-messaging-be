@@ -1,8 +1,9 @@
 package log
 
 import (
+	"airbnb-messaging-be/internal/pkg/log/prefixed"
+
 	"github.com/sirupsen/logrus"
-	prefixed "github.com/x-cray/logrus-prefixed-formatter"
 )
 
 var log = logrus.New()
