@@ -11,6 +11,12 @@
       "mode": "debug",
       "program": "${workspaceFolder}/cmd/app/main.go",
       "cwd": "${workspaceFolder}",
+      "substitutePath": [
+        {
+          "from": "D:\\projects\\giri\\airbnb-clone\\airbnb-messaging-be\\.vscode",
+          "to": "D:\\projects\\giri\\airbnb-clone\\airbnb-messaging-be\\cmd\\app"
+        }
+      ],
       "env" : {},
     }
   ]
