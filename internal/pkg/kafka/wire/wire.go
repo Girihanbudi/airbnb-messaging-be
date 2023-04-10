@@ -2,6 +2,8 @@ package wire
 
 import (
 	"airbnb-messaging-be/internal/pkg/kafka"
+	"airbnb-messaging-be/internal/pkg/kafka/consumer"
+	"airbnb-messaging-be/internal/pkg/kafka/producer"
 	"airbnb-messaging-be/internal/pkg/kafka/router"
 
 	"github.com/google/wire"
@@ -12,5 +14,11 @@ var PackageSet = wire.NewSet(
 	router.NewRouter,
 
 	wire.Struct(new(kafka.Options), "*"),
-	kafka.NewEventListener,
+	kafka.NewSaramaClient,
+
+	wire.Struct(new(consumer.Options), "*"),
+	consumer.NewEventListener,
+
+	wire.Struct(new(producer.Options), "*"),
+	producer.NewEventProducer,
 )
