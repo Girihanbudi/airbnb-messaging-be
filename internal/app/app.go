@@ -8,7 +8,6 @@ import (
 	kafkaconsumer "airbnb-messaging-be/internal/pkg/kafka/consumer"
 	kafkaproducer "airbnb-messaging-be/internal/pkg/kafka/producer"
 	"airbnb-messaging-be/internal/pkg/log"
-	"airbnb-messaging-be/internal/pkg/validator"
 	"context"
 	"sync"
 
@@ -37,9 +36,6 @@ func (a App) Run(ctx context.Context) {
 
 func (a App) runModules(ctx context.Context) {
 	log.Event(Instance, "Starting...")
-
-	// init app validator
-	validator.InitValidator()
 
 	// init app cache
 	auth.InitAuthCache()
