@@ -8,14 +8,14 @@ import (
 	"context"
 )
 
-func (u Usecase) SendSms(ctx context.Context, req request.SendSms) (res response.SendSms, err *stderror.StdError) {
+func (u Usecase) SendSms(ctx context.Context, cmd request.SendSms) (res response.SendSms, err *stderror.StdError) {
 	sms := module.Sms{
-		Type:    req.Type,
-		Context: req.Context,
-		Payload: req.Payload,
+		Type:    cmd.Type,
+		Context: cmd.Context,
+		Payload: cmd.Payload,
 	}
 
-	if valid, validateErr := req.Validate(); !valid {
+	if valid, validateErr := cmd.Validate(); !valid {
 		sms.Status = module.SmsStatusFailed.String()
 		if err = u.CreateSmsLog(ctx, &sms); err != nil {
 			return
@@ -25,7 +25,7 @@ func (u Usecase) SendSms(ctx context.Context, req request.SendSms) (res response
 	}
 
 	var payload module.Payload
-	if extractPayloadErr := req.Payload.Scan(&payload); err != nil {
+	if extractPayloadErr := cmd.Payload.Scan(&payload); err != nil {
 		sms.Status = module.SmsStatusFailed.String()
 		if err = u.CreateSmsLog(ctx, &sms); err != nil {
 			return

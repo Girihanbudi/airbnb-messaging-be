@@ -8,5 +8,5 @@ import (
 )
 
 type ISms interface {
-	SendSms(ctx context.Context, req request.SendSms) (res response.SendSms, err *stderror.StdError)
+	SendSms(ctx context.Context, cmd request.SendSms) (res response.SendSms, err *stderror.StdError)
 }
