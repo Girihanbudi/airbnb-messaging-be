@@ -16,6 +16,8 @@ import (
 	"airbnb-messaging-be/internal/pkg/http/server"
 	"airbnb-messaging-be/internal/pkg/http/server/router"
 	"airbnb-messaging-be/internal/pkg/kafka"
+	"airbnb-messaging-be/internal/pkg/kafka/consumer"
+	"airbnb-messaging-be/internal/pkg/kafka/producer"
 	router2 "airbnb-messaging-be/internal/pkg/kafka/router"
 	"airbnb-messaging-be/internal/pkg/messagebird"
 	"github.com/google/wire"
@@ -36,29 +38,40 @@ func NewApp() (*App, error) {
 		Router: engine,
 	}
 	serverServer := server.NewServer(options)
-	config2 := tool.ExtractKafkaConfig(config)
-	config3 := tool.ExtractKafkaRouterConfig(config)
+	config2 := tool.ExtractKafkaConsumerConfig(config)
+	config3 := tool.ExtractKafkaConfig(config)
+	config4 := tool.ExtractKafkaRouterConfig(config)
 	routerOptions := router2.Options{
-		Config: config3,
+		Config: config4,
 	}
 	routerRouter := router2.NewRouter(routerOptions)
 	kafkaOptions := kafka.Options{
-		Config: config2,
+		Config: config3,
 		Router: routerRouter,
 	}
-	listener := kafka.NewEventListener(kafkaOptions)
-	config4 := tool.ExtractDBConfig(config)
+	client := kafka.NewSaramaClient(kafkaOptions)
+	consumerOptions := consumer.Options{
+		Config: config2,
+		Client: client,
+		Router: routerRouter,
+	}
+	listener := consumer.NewEventListener(consumerOptions)
+	producerOptions := producer.Options{
+		Client: client,
+	}
+	producerProducer := producer.NewEventProducer(producerOptions)
+	config5 := tool.ExtractDBConfig(config)
 	gormOptions := gorm.Options{
-		Config: config4,
+		Config: config5,
 	}
 	gormEngine := gorm.NewORM(gormOptions)
 	repoimplOptions := repoimpl.Options{
 		Gorm: gormEngine,
 	}
 	repo := repoimpl.NewSmsRepo(repoimplOptions)
-	config5 := tool.ExtractMessengerConfig(config)
+	config6 := tool.ExtractMessengerConfig(config)
 	messagebirdOptions := messagebird.Options{
-		Config: config5,
+		Config: config6,
 	}
 	messenger := messagebird.InitMessenger(messagebirdOptions)
 	usecaseimplOptions := usecaseimpl.Options{
@@ -74,6 +87,7 @@ func NewApp() (*App, error) {
 	appOptions := Options{
 		HttpServer:    serverServer,
 		EventListener: listener,
+		EventProducer: producerProducer,
 		SmsHandler:    handler,
 	}
 	app := &App{
