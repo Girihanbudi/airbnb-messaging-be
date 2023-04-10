@@ -5,6 +5,7 @@ import (
 	gorm "airbnb-messaging-be/internal/pkg/gorm/config"
 	httpserver "airbnb-messaging-be/internal/pkg/http/server/config"
 	kafka "airbnb-messaging-be/internal/pkg/kafka/config"
+	kafkaconsumer "airbnb-messaging-be/internal/pkg/kafka/consumer/config"
 	kafkarouter "airbnb-messaging-be/internal/pkg/kafka/router/config"
 	messagebird "airbnb-messaging-be/internal/pkg/messagebird/config"
 )
@@ -25,6 +26,10 @@ func ExtractKafkaConfig(config config.Config) kafka.Config {
 	return config.Kafka
 }
 
+func ExtractKafkaConsumerConfig(config config.Config) kafkaconsumer.Config {
+	return config.Kafka.Consumer
+}
+
 func ExtractKafkaRouterConfig(config config.Config) kafkarouter.Config {
-	return config.Kafka.Router
+	return config.Kafka.Consumer.Router
 }
