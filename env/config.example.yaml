@@ -26,10 +26,11 @@ messenger:
 kafka:
   clientid:
   brokers:
-  group:
-  assigner:
   version:
-  isuseoldest:
-  router:
-    separator:
+  consumer:
+    group:
+    assigner:
+    isuseoldest:
+    router:
+      separator:
 
