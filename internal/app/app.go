@@ -5,7 +5,8 @@ import (
 	"airbnb-messaging-be/internal/pkg/cache/auth"
 	"airbnb-messaging-be/internal/pkg/http/server"
 	httprouter "airbnb-messaging-be/internal/pkg/http/server/router"
-	"airbnb-messaging-be/internal/pkg/kafka"
+	kafkaconsumer "airbnb-messaging-be/internal/pkg/kafka/consumer"
+	kafkaproducer "airbnb-messaging-be/internal/pkg/kafka/producer"
 	"airbnb-messaging-be/internal/pkg/log"
 	"airbnb-messaging-be/internal/pkg/validator"
 	"context"
@@ -18,7 +19,8 @@ var Instance = "App"
 
 type Options struct {
 	HttpServer    *server.Server
-	EventListener *kafka.Listener
+	EventListener *kafkaconsumer.Listener
+	EventProducer *kafkaproducer.Producer
 
 	SmsHandler *smsevent.Handler
 }
@@ -76,12 +78,12 @@ func (a App) stopModules() {
 
 	var wg sync.WaitGroup
 
-	wg.Add(2)
+	wg.Add(3)
 	go func() {
 		defer wg.Done()
-		err := a.HttpServer.Stop()
+		err := a.EventProducer.Stop()
 		if err != nil {
-			log.Fatal(Instance, "failed to stop http server", err)
+			log.Fatal(Instance, "failed to stop event producer", err)
 		}
 	}()
 
@@ -90,6 +92,14 @@ func (a App) stopModules() {
 		err := a.EventListener.Stop()
 		if err != nil {
 			log.Fatal(Instance, "failed to stop event listener", err)
+		}
+	}()
+
+	go func() {
+		defer wg.Done()
+		err := a.HttpServer.Stop()
+		if err != nil {
+			log.Fatal(Instance, "failed to stop http server", err)
 		}
 	}()
 
