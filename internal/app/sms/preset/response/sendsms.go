@@ -1,5 +1,5 @@
 package response
 
 type SendSms struct {
-	SmsId *string `json:"smsId"`
+	SmsId *uint `json:"smsId"`
 }

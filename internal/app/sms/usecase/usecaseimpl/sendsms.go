@@ -6,6 +6,7 @@ import (
 	"airbnb-messaging-be/internal/app/sms/preset/response"
 	"airbnb-messaging-be/internal/pkg/stderror"
 	"context"
+	"fmt"
 )
 
 func (u Usecase) SendSms(ctx context.Context, cmd request.SendSms) (res response.SendSms, err *stderror.StdError) {
@@ -17,6 +18,7 @@ func (u Usecase) SendSms(ctx context.Context, cmd request.SendSms) (res response
 
 	if valid, validateErr := cmd.Validate(); !valid {
 		sms.Status = module.SmsStatusFailed.String()
+		sms.Logs = fmt.Sprintf("failed to validate request, %s", validateErr)
 		if err = u.CreateSmsLog(ctx, &sms); err != nil {
 			return
 		}
@@ -25,8 +27,9 @@ func (u Usecase) SendSms(ctx context.Context, cmd request.SendSms) (res response
 	}
 
 	var payload module.Payload
-	if extractPayloadErr := cmd.Payload.Scan(&payload); err != nil {
+	if extractPayloadErr := cmd.Payload.Get(&payload); extractPayloadErr != nil {
 		sms.Status = module.SmsStatusFailed.String()
+		sms.Logs = fmt.Sprintf("failed to extract request payload, %s", extractPayloadErr)
 		if err = u.CreateSmsLog(ctx, &sms); err != nil {
 			return
 		}
@@ -34,9 +37,9 @@ func (u Usecase) SendSms(ctx context.Context, cmd request.SendSms) (res response
 		return
 	}
 
-	_, sendErr := u.Messenger.SendSms(payload.Recipients, payload.Body, nil, payload.Params)
-	if sendErr != nil {
+	if _, sendErr := u.Messenger.SendSms(payload.Recipients, payload.Body, nil, payload.Params); sendErr != nil {
 		sms.Status = module.SmsStatusFailed.String()
+		sms.Logs = fmt.Sprintf("failed to send sms to provider, %s", sendErr)
 		if err = u.CreateSmsLog(ctx, &sms); err != nil {
 			return
 		}
