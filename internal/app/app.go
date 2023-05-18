@@ -1,8 +1,10 @@
 package app
 
 import (
+	elasticmid "airbnb-messaging-be/internal/app/middleware/elastic"
 	smsevent "airbnb-messaging-be/internal/app/sms/api/event"
 	"airbnb-messaging-be/internal/pkg/cache/auth"
+	elastic "airbnb-messaging-be/internal/pkg/elasticsearch"
 	"airbnb-messaging-be/internal/pkg/http/server"
 	httprouter "airbnb-messaging-be/internal/pkg/http/server/router"
 	kafkaconsumer "airbnb-messaging-be/internal/pkg/kafka/consumer"
@@ -39,6 +41,12 @@ func (a App) runModules(ctx context.Context) {
 
 	// init app cache
 	auth.InitAuthCache()
+
+	// Init elasticsearch client
+	elastic.InitElasticSearch()
+
+	// Create required index in elastic
+	elasticmid.CreateIndex()
 
 	// recover from panic
 	a.HttpServer.Router.Use(gin.Recovery())
