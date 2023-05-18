@@ -1,6 +1,9 @@
 stage:
 origins:
 domain:
+creds:
+  privatekey:
+  publiccert:
 httpserver:
   host:
   port:
@@ -20,9 +23,11 @@ cache:
     host:
     password:
     db:
-messenger:
-  accesskey:
-  originator:
+elastic:
+  addresses:
+  username:
+  password:
+  separator:
 kafka:
   clientid:
   brokers:
@@ -33,4 +38,6 @@ kafka:
     isuseoldest:
     router:
       separator:
-
+messenger:
+  accesskey:
+  originator:
